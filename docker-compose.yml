@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  eureka-server:
+    build: 
+      context: ./eureka-server
+      dockerfile: Dockerfile
+    image: grocery-eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - grocery-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  grocery-service:
+    build: 
+      context: ./grocery-service
+      dockerfile: Dockerfile
+    image: grocery-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - eureka-server
+    networks:
+      - grocery-network
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - SPRING_PROFILES_ACTIVE=docker
+
+  order-service:
+    build: 
+      context: ./order-service
+      dockerfile: Dockerfile
+    image: order-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - eureka-server
+      - grocery-service
+    networks:
+      - grocery-network
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - SPRING_PROFILES_ACTIVE=docker
+
+  api-gateway:
+    build: 
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    image: grocery-api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - eureka-server
+      - grocery-service
+      - order-service
+    networks:
+      - grocery-network
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - SPRING_PROFILES_ACTIVE=docker
+
+networks:
+  grocery-network:
+    driver: bridge

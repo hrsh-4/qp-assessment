@@ -1,0 +1,5 @@
+com\grocery\GroceryServiceApplication.class
+com\grocery\service\GroceryItemService.class
+com\grocery\model\GroceryItem.class
+com\grocery\controller\GroceryItemController.class
+com\grocery\repository\GroceryItemRepository.class

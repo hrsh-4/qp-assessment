@@ -1,0 +1,38 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: grocery-service
+          uri: lb://grocery-service
+          predicates:
+            - Path=/api/grocery-items/**
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/api/orders/**
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    preferIpAddress: true
+
+# Logging configuration
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.web: INFO
+
+# Gateway specific configurations
+gateway:
+  global-timeout: 5000
+  cors:
+    allowed-origins: 
+      - http://localhost:3000
+      - http://localhost:4200
+  rate-limiting:
+    requests-per-second: 10

@@ -1,0 +1,39 @@
+server:
+  port: 8082
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:orderdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    preferIpAddress: true
+
+# Logging configuration
+logging:
+  level:
+    org.springframework.web: INFO
+    com.grocery: DEBUG
+
+# Custom application properties
+order:
+  processing:
+    max-items-per-order: 50
+    default-status: PENDING
+  pricing:
+    tax-rate: 0.1
+    discount-threshold: 100.0

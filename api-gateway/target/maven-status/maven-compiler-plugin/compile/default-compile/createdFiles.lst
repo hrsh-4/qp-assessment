@@ -1,0 +1,4 @@
+com\grocery\config\GlobalFallbackConfiguration.class
+com\grocery\filter\GlobalLoggingFilter.class
+com\grocery\ApiGatewayApplication.class
+com\grocery\config\GatewayRoutingConfiguration.class
